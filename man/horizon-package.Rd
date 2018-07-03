@@ -8,8 +8,8 @@
 \tabular{ll}{
 Package: \tab horizon\cr
 Type: \tab Package\cr
-Version: \tab 1.0\cr
-Date: \tab 2016-09-09\cr
+Version: \tab 1.2\cr
+Date: \tab 2018-07-03\cr
 Depends: \tab raster\cr
 License: \tab GPL-2\cr
 }

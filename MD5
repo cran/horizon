@@ -1,6 +1,6 @@
-723569ada02ffdd26472dfb1fdbdb60b *DESCRIPTION
+f77ff3d8a6f43928b35e2167ab50b3aa *DESCRIPTION
 4a6292511bc7b6e927d7aafe27df75ee *NAMESPACE
-cf3d27c8f47f17e64b4d854e0f912617 *R/horizon.R
-ed3d599c625c76bc23241674caf87eda *man/horizon-package.Rd
+e117af1491a8767051b7f4d8fd5d258d *R/horizon_1_1.R
+c92014f9d81c52393b191bcce2eaed52 *man/horizon-package.Rd
 59cb67bbe61e5bdd9822a90b37706e8b *man/horizonSearch.Rd
 df8c905e349f6db0bf780edfc5104082 *man/svf.Rd

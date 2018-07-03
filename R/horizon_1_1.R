@@ -41,7 +41,7 @@ horizonSearch <- function(x, azimuth, maxDist=1000, degrees=FALSE, ll=TRUE, file
     
     dist_d <- pointDistance(xyFromCell(x,cells_row), xyFromCell(x,cells_d), lonlat=ll)
     meanDist <- mean(dist_d[valid],na.rm=TRUE)
-    iHoriz <- atan((elev_d - elev_row)/dist_d)
+    iHoriz <- pmax(0,atan2((elev_d - elev_row),dist_d))
     
     outHoriz_p <- numeric(length(cells_d))+NA
     valid <- valid & !is.na(iHoriz)
@@ -56,7 +56,7 @@ horizonSearch <- function(x, azimuth, maxDist=1000, degrees=FALSE, ll=TRUE, file
       
       dist_d <- pointDistance(xyFromCell(x,cells_row), xyFromCell(x,cells_d), lonlat=ll)
       meanDist <- mean(dist_d[valid],na.rm=TRUE)
-      iHoriz <- atan((elev_d - elev_row)/dist_d)
+      iHoriz <- pmax(0,atan2((elev_d - elev_row),dist_d))
       
       valid <- valid & !is.na(iHoriz) & (is.na(outHoriz_p) | (!is.na(iHoriz) & !is.na(outHoriz_p) & iHoriz > outHoriz_p))
       outHoriz_p[valid] <- iHoriz[valid]
@@ -137,7 +137,7 @@ svf <- function(x, nAngles=16, maxDist=1000, ll=TRUE, filename="", blockSize=NUL
       
       dist_d <- pointDistance(xyFromCell(x,cells_row), xyFromCell(x,cells_d), lonlat=ll)
       meanDist <- mean(dist_d[valid],na.rm=TRUE)
-      iHoriz <- atan((elev_d - elev_row)/dist_d)
+      iHoriz <- pmax(0,atan2((elev_d - elev_row),dist_d))
       
       outHoriz_p <- numeric(length(cells_d))+NA
       valid <- valid & !is.na(iHoriz)
@@ -152,11 +152,15 @@ svf <- function(x, nAngles=16, maxDist=1000, ll=TRUE, filename="", blockSize=NUL
         
         dist_d <- pointDistance(xyFromCell(x,cells_row), xyFromCell(x,cells_d), lonlat=ll)
         meanDist <- mean(dist_d[valid],na.rm=TRUE)
-        iHoriz <- atan((elev_d - elev_row)/dist_d)
+        iHoriz <- pmax(0,atan2((elev_d - elev_row),dist_d))
         
         valid <- valid & !is.na(iHoriz) & (is.na(outHoriz_p) | (!is.na(iHoriz) & !is.na(outHoriz_p) & iHoriz > outHoriz_p))
         outHoriz_p[valid] <- iHoriz[valid]
       }
+      
+      #Correct horizon angle in selected azimuth based on 8-neighbour slope
+      horMin <- -atan(tan(sl_as_row[,1])*cos(azimuth-sl_as_row[,2]))
+      outHoriz_p <- pmax(horMin, outHoriz_p, na.rm=FALSE)
       
       #Calculate SVF in angle direction from horizon + terrain slope/aspect
       svf_angle <- ((cos(sl_as_row[,1])*(cos(outHoriz_p)^2))+
